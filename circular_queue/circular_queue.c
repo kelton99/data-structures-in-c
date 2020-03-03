@@ -1,33 +1,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "queue.h"
+#include "circular_queue.h"
 
 #define MAX_ITEMS 11
 
-struct queue {
+struct c_queue {
     int itens[MAX_ITEMS];
     unsigned int start;
     unsigned int end;
 };
 
-Queue *queue_create()
+Circular_Queue *queue_create()
 {
-	Queue *q = malloc(sizeof(Queue));
+	Circular_Queue *q = malloc(sizeof(Circular_Queue));
 	q->start = 0;
 	q->end = 0;
 
 	return q;
 }
 
-void queue_destroy(Queue *q)
+void queue_destroy(Circular_Queue *q)
 {
-	if (q != NULL){
-		free(q);
-	}
+	if (q != NULL) free(q);
 }
 
-void queue_enqueue(Queue *q, int value)
+void queue_enqueue(Circular_Queue *q, int value)
 {
 	if (queue_size(q) == MAX_ITEMS - 1) {
 		printf("Not able to enqueue %d, The queue is full.\n", value);
@@ -38,7 +36,7 @@ void queue_enqueue(Queue *q, int value)
 	q->end = (q->end + 1) % MAX_ITEMS;
 }
 
-int queue_dequeue(Queue *q)
+int queue_dequeue(Circular_Queue *q)
 {
 	if (queue_size(q) == 0) {
 		printf("Not able to dequeue, Queue is empty.\n");
@@ -51,12 +49,12 @@ int queue_dequeue(Queue *q)
 	return current_value;
 }
 
-int queue_size(Queue *q)
+int queue_size(Circular_Queue *q)
 {
 	return q->end >= q->start ? q->end - q->start : MAX_ITEMS - q->start + q->end;
 }
 
-int queue_search_value(Queue *q, int value)
+int queue_search_value(Circular_Queue *q, int value)
 {
 	if (queue_size(q) == 0) {
 		printf("Not able to search, Queue is empty.\n");
@@ -65,33 +63,27 @@ int queue_search_value(Queue *q, int value)
 
 	unsigned int i;
 	for (i = q->start; i != q->end; i = (i + 1) % MAX_ITEMS)
-	{
-		if (q->itens[i] == value) {
-			return i;
-		}
-	}
-
+		if (q->itens[i] == value) return i;
+		
 	return -1;
 }
 
-void queue_print(Queue *q)
+void queue_print(Circular_Queue *q)
 {
 	if (queue_size(q) == 0) {
-		printf("Not able to print, Queue is empty.\n");
+		puts("The queue is empty!");
 		return;
 	}
 
-	printf("\n[");
 	unsigned int i;
 	for (i = q->start; i != q->end; i = (i + 1) % MAX_ITEMS)
-	{
-		printf(" %d ", q->itens[i]);
-	}
+		printf("[%d]", q->itens[i]);
 
-	printf("]\n");
+	puts("");
 }
 
-void queue_invert(Queue *q)
+//To be removed and reporpused
+void queue_invert(Circular_Queue *q)
 {
 	int size = queue_size(q);
 	if (size == 0) {
@@ -102,8 +94,7 @@ void queue_invert(Queue *q)
 	int i, inversions = size / 2,
 	aux, start = q->start, end = q->end - 1;
 
-	for (i = 0; i < inversions; i++)
-	{
+	for (i = 0; i < inversions; i++){
 		aux = q->itens[start];
 		q->itens[start] = q->itens[end];
 		q->itens[end] = aux;
