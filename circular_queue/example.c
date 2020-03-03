@@ -1,25 +1,24 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include "circular_queue.h"
 
 // Terrible way to clean the console window, using only for the sake of simplicity
 #ifdef _WIN32
-	void inline clear_console() { system("cls"); }
+	void clear_console() { system("cls"); }
 #else
-	void inline clear_console() { system("clear"); }
+	void clear_console() { system("clear"); }
 #endif
 
 enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_SEARCH, OPT_INVERT, OPT_HELP};
 
-int get_int_input(int * value)
+int get_int_input(int *value)
 {
 	char line[256];
 
 	if (fgets(line, sizeof(line), stdin)) 
 		return sscanf(line, "%d", value);
 	
-	return false;
+	return 0;
 }
 
 int get_menu_input(void)
@@ -30,7 +29,7 @@ int get_menu_input(void)
 	int option;
 	if (1 == get_int_input(&option)) return option;
 	
-	return false;
+	return 0;
 }
 
 void print_queue_status(Circular_Queue *q)
@@ -51,7 +50,7 @@ void enqueue(Circular_Queue *q)
 
 void dequeue(Circular_Queue *q) {
 	int value = queue_dequeue(q);
-	if (value == false) {
+	if (value == 0) {
 		puts("Not able to dequeue, queue is empty.");
 		return;
 	}
@@ -77,7 +76,7 @@ void search(Circular_Queue *q) {
 	}
 }
 
-void queue_help(){
+void help(){
 	/* TODO
 	* Print in the screen what is a circular queue
 	* How does it work and the execution time using BigO notation
@@ -88,7 +87,7 @@ int main(void)
 {
 	Circular_Queue *q = queue_create();
 
-	while(true) {
+	while(1) {
 		clear_console();
     		print_queue_status(q);
 
@@ -114,9 +113,15 @@ int main(void)
     			case OPT_INVERT:
     				queue_invert(q);
     				break;
+			case OPT_HELP:
+				help();
+				break;
+			default:
+				puts("Option not avaliable!");
+				break;
     		}
 
-    		printf("Press any key to continue to menu...");
+    		puts("Press any key to continue to menu...");
 		getchar();
 
 	}
