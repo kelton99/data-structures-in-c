@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "stack.h"
 
 struct stack{
@@ -15,6 +14,8 @@ Stack *create_stack(int capacity)
         s->capacity = capacity;
         s->elements = (int *) malloc(capacity * sizeof(int));
         s->size = -1;
+
+        return s;
 }
 
 int is_empty(Stack *s)
@@ -27,25 +28,24 @@ int is_full(Stack *s)
         return s->size == s->capacity - 1;
 }
 
-int pop(Stack *s)
-{
-        if(is_empty(s)){
-                puts("The Stack is empty!");
-                return -1;
-        }
-
-        s->size--; //return and decrement in the same line can suck my balls!
-        return s->elements[s->size + 1];
-}
-
-void push(Stack *s, int value)
+void stack_push(Stack *s, int value)
 {
         if (isFull(s)) {
-                puts("The Stack is Full!");
+                puts("The stack is full!");
                 return;
         }
         s->size++; // return and increment in the same line can suck my balls!
         s->elements[s->size] = value;
+}
+
+int stack_pop(Stack *s)
+{
+        if (is_empty(s)) {
+                puts("The stack is empty!");
+                return -1;
+        }
+        s->size--; //return and decrement in the same line can suck my balls!
+        return s->elements[s->size + 1];
 }
 
 int top(Stack *s)
@@ -58,9 +58,9 @@ int size(Stack *s)
         return s->size;
 }
 
-void print(Stack *s)
+void stack_print(Stack *s)
 {
-        if (is_empty(s)){
+        if (is_empty(s)) {
                 puts("The stack is empty!");
                 return;
         }
@@ -72,9 +72,9 @@ void print(Stack *s)
         puts("");
 }
 
-void destroy(Stack *s)
+void stack_destroy(Stack *s)
 {
-        if(s != NULL) free(s);
+        if (s != NULL) free(s);
         puts("The Stack is Null");
         return;
 }
