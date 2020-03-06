@@ -88,30 +88,6 @@ void queue_print(Circular_Queue *q)
 	puts("");
 }
 
-//To be removed and reporpused
-void queue_invert(Circular_Queue *q)
-{
-	
-	if (is_empty(q)) {
-		printf("Not able to invert, Queue is empty.\n");
-		return;
-	}
-
-	int size = queue_size(q);
-
-	int i, inversions = size / 2,
-	aux, start = q->start, end = q->end - 1;
-
-	for (i = 0; i < inversions; i++){
-		aux = q->itens[start];
-		q->itens[start] = q->itens[end];
-		q->itens[end] = aux;
-
-		start = (start + 1) % q->capacity;
-		end = (end - 1) % q->capacity;
-	}
-}
-
 void queue_destroy(Circular_Queue *q)
 {
 	if (q != NULL) free(q);

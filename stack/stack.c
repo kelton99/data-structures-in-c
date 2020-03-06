@@ -30,7 +30,7 @@ int is_full(Stack *s)
 
 void stack_push(Stack *s, int value)
 {
-        if (isFull(s)) {
+        if (is_full(s)) {
                 puts("The stack is full!");
                 return;
         }
@@ -66,7 +66,7 @@ void stack_print(Stack *s)
         }
 
         int i;
-        for (i = 0; i < s->size; i++)
+        for (i = 0; i <= s->size; i++)
                 printf("[%d]", s->elements[i]);
         
         puts("");

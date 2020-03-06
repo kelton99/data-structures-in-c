@@ -13,7 +13,6 @@ int get_menu_input(void);
 void print(Stack *s);
 void push(Stack *s);
 void pop(Stack *s);
-void invert(Stack *s);
 void help();
 
 enum options {OPT_EXIT, OPT_PUSH, OPT_POP, OPT_HELP};
@@ -24,7 +23,7 @@ int main(void)
 
 	while(1) {
 		clear_console();
-    		print_queue(s);
+    		print(s);
 
     		int option = get_menu_input();
 
@@ -63,7 +62,7 @@ int get_int_input(int *value)
 
 int get_menu_input(void)
 {
-	puts("Options Menu:\n[0] exit\n[1] push\n[2] pop\n[3]help");
+	puts("Options Menu:\n[0] exit\n[1] push\n[2] pop\n[3] help");
 	puts("Insert an option:");
 	
 	int option;
@@ -74,7 +73,7 @@ int get_menu_input(void)
 void print(Stack *s)
 {
 	printf("%s","Current Stack: ");
-	print(s);
+	stack_print(s);
 }
 void push(Stack *s)
 {

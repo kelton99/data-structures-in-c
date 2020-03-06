@@ -1,4 +1,4 @@
-TARGET = example
+TARGET = circular_queue
 CC=gcc
 CFLAGS =-I. -Wall -Wextra
 HEADERS = queue.h

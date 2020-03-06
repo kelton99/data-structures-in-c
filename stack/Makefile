@@ -1,8 +1,8 @@
-TARGET = example
+TARGET = stack
 CC=gcc
 CFLAGS =-I. -Wall -Wextra
 HEADERS = stack.h
-OBJ = example.o stack.o
+OBJ = stack_ex.o stack.o
 
 %.o : %.c $(HEADERS)
 	$(CC) -c -o $@ $< $(CFLAGS)
