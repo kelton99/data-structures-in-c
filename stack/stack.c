@@ -34,7 +34,7 @@ void stack_push(Stack *s, int value)
                 puts("The stack is full!");
                 return;
         }
-        s->size++; // return and increment in the same line can suck my balls!
+        s->size++;
         s->elements[s->size] = value;
 }
 
@@ -44,16 +44,16 @@ int stack_pop(Stack *s)
                 puts("The stack is empty!");
                 return -1;
         }
-        s->size--; //return and decrement in the same line can suck my balls!
+        s->size--;
         return s->elements[s->size + 1];
 }
 
-int top(Stack *s)
+int stack_top(Stack *s)
 {
         return s->elements[s->size];
 }
 
-int size(Stack *s)
+int stack_size(Stack *s)
 {
         return s->size;
 }

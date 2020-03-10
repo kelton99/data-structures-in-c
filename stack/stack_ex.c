@@ -13,16 +13,20 @@ int get_menu_input(void);
 void print(Stack *s);
 void push(Stack *s);
 void pop(Stack *s);
+Stack *invert(Stack *s);
+Stack *remove_element(Stack *s);
+void load_dataset(Stack *s);
 void help();
 
-enum options {OPT_EXIT, OPT_PUSH, OPT_POP, OPT_HELP};
+enum options {OPT_EXIT, OPT_PUSH, OPT_POP, OPT_INVERT, OPT_REMOVE, OPT_HELP};
 
 int main(void)
 {
 	Stack *s = create_stack(10);
-
+	load_dataset(s);
 	while(1) {
 		clear_console();
+		
     		print(s);
 
     		int option = get_menu_input();
@@ -35,6 +39,12 @@ int main(void)
     				break;
     			case OPT_POP:
     				pop(s);
+    				break;
+			case OPT_INVERT:
+    				s = invert(s);
+    				break;
+			case OPT_REMOVE:
+    				s = remove_element(s);
     				break;
 			case OPT_HELP:
 				help();
@@ -62,7 +72,10 @@ int get_int_input(int *value)
 
 int get_menu_input(void)
 {
-	puts("Options Menu:\n[0] exit\n[1] push\n[2] pop\n[3] help");
+	puts("Options Menu:");
+	puts("[0] exit   [1]push");
+	puts("[2] pop    [3]invert");
+	puts("[4] remove [5]help");
 	puts("Insert an option:");
 	
 	int option;
@@ -70,11 +83,13 @@ int get_menu_input(void)
 	
 	return 0;
 }
+
 void print(Stack *s)
 {
 	printf("%s","Current Stack: ");
 	stack_print(s);
 }
+
 void push(Stack *s)
 {
 	int value;
@@ -84,11 +99,57 @@ void push(Stack *s)
 	else
 		puts("Not able to push, invalid input.");
 }
+
 void pop(Stack *s)
 {
 	int value = stack_pop(s);
 	if (value == -1) return;
 	printf("Value dequeued: %d\n", value);
+}
+
+Stack *invert(Stack *s)
+{
+	if (is_empty(s)){
+		puts("Can't invert a empty stack");
+		return s;
+	}
+	
+	Stack *aux = create_stack(10);
+	while(!is_empty(s)){
+		stack_push(aux, stack_pop(s));
+	}
+	return aux;
+}
+
+Stack *remove_element(Stack *s)
+{
+	if (is_empty(s)){
+		puts("Can't invert a empty stack");
+		return s;
+	}
+
+	int n;
+	puts("Insert a value to remove: ");
+	if(!get_int_input(&n)) return s;
+
+	Stack *aux = create_stack(10);
+	while (stack_top(s) != n){
+		stack_push(aux, stack_pop(s));
+	}
+	stack_pop(s);
+	while (!is_empty(s)){
+		stack_push(aux, stack_pop(s));
+	}
+	
+	aux = invert(aux);
+	return aux;
+	
+}
+
+void load_dataset(Stack *s)
+{
+	int i;
+	for(i = 0; i < 10; i++) stack_push(s, i);
 }
 
 void help()
