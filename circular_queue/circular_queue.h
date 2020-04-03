@@ -11,6 +11,12 @@ int is_empty(Circular_Queue *q);
 
 int is_full(Circular_Queue *q);
 
+int queue_size(Circular_Queue *q);
+
+int queue_front_position(Circular_Queue *q);
+
+int queue_front(Circular_Queue *q);
+
 void queue_enqueue(Circular_Queue *q, int value);
 
 int queue_dequeue(Circular_Queue *q);

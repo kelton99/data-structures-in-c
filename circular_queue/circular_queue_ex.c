@@ -9,13 +9,14 @@
 	void clear_console() { system("clear"); }
 #endif
 
-enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_SEARCH};
+enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_REMOVE};
 
 int get_int_input(int *value);
 int get_menu_input(void);
 void print_queue(Circular_Queue *q);
 void enqueue(Circular_Queue *q);
 void dequeue(Circular_Queue *q);
+void remove_element(Circular_Queue *q);
 
 int main(void)
 {
@@ -35,6 +36,9 @@ int main(void)
     				break;
     			case OPT_DEQUEUE:
     				dequeue(q);
+    				break;
+			case OPT_REMOVE:
+    				remove_element(q);
     				break;
 			default:
 				puts("Option not avaliable!");
@@ -90,4 +94,44 @@ void dequeue(Circular_Queue *q)
 	if (value == -1) return;
 
 	printf("Value dequeued: %d\n", value);
+}
+
+void print_empty(Circular_Queue *q)
+{
+	while (!is_empty(q))
+		printf("[%d]", queue_dequeue(q));
+	puts("");
+}
+
+void print_not_empty(Circular_Queue *q)
+{
+	for(int i = 0; i < queue_size(q); i++){
+		int temp = queue_dequeue(q);
+		printf("[%d]", temp);
+		queue_enqueue(q, temp);
+	}
+	puts("");
+}
+
+void remove_element(Circular_Queue *q)
+{
+	if (is_empty(q)){
+		puts("Can't remove an element of an empty queue");
+		return;
+	}
+
+	int n;
+	puts("Insert a value to remove: ");
+	if(!get_int_input(&n)) return;
+
+	int i = queue_size(q) - 1;
+
+	while(queue_front(q) != n){
+		queue_enqueue(q, queue_dequeue(q));
+		i--;
+	}
+	queue_dequeue(q);
+
+	for(i; i > 0; i--) 
+		queue_enqueue(q, queue_dequeue(q));
 }

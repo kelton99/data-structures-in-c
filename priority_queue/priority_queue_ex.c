@@ -16,11 +16,12 @@ int get_menu_input(void);
 void print_queue(Priority_Queue *q);
 void enqueue(Priority_Queue *q);
 void dequeue(Priority_Queue *q);
+void load_dataset(Priority_Queue *q);
 
 int main(void)
 {
-	Priority_Queue *p = queue_create(5);
-
+	Priority_Queue *p = queue_create(100);
+	load_dataset(p);
 	while(1) {
 		clear_console();
     		print_queue(p);
@@ -90,4 +91,10 @@ void dequeue(Priority_Queue *q)
 	if (value == -1) return;
 
 	printf("Value dequeued: %d\n", value);
+}
+
+void load_dataset(Priority_Queue *q)
+{
+	while (!is_full(q))
+		queue_enqueue(q, rand() % 100);
 }

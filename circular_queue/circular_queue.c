@@ -28,6 +28,15 @@ int queue_size(Circular_Queue *q)
 	return q->size;
 }
 
+int queue_front_position(Circular_Queue *q)
+{
+	return q->start;
+}
+int queue_front(Circular_Queue *q)
+{
+	return q->itens[q->start];
+}
+
 int is_empty(Circular_Queue *q)
 {
 	return q->start == -1;

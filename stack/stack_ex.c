@@ -155,8 +155,3 @@ void load_dataset(Stack *s)
 	int i;
 	for(i = 0; i < 10; i++) stack_push(s, i);
 }
-
-void help()
-{
-	//TODO help
-}
