@@ -9,19 +9,17 @@
 	void clear_console() { system("clear"); }
 #endif
 
-enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_SEARCH, OPT_HELP};
+enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_SEARCH};
 
 int get_int_input(int *value);
 int get_menu_input(void);
 void print_queue(Circular_Queue *q);
 void enqueue(Circular_Queue *q);
 void dequeue(Circular_Queue *q);
-void search(Circular_Queue *q);
-void help();
 
 int main(void)
 {
-	Circular_Queue *q = queue_create();
+	Circular_Queue *q = queue_create(5);
 
 	while(1) {
 		clear_console();
@@ -38,12 +36,6 @@ int main(void)
     			case OPT_DEQUEUE:
     				dequeue(q);
     				break;
-    			case OPT_SEARCH:
-    				search(q);
-    				break;
-			case OPT_HELP:
-				help();
-				break;
 			default:
 				puts("Option not avaliable!");
 				break;
@@ -98,31 +90,4 @@ void dequeue(Circular_Queue *q)
 	if (value == -1) return;
 
 	printf("Value dequeued: %d\n", value);
-}
-
-void search(Circular_Queue *q)
-{
-
-	int value, position;
-	printf("Insert a value to search:\n");
-	
-	if (get_int_input(&value)) {
-		position = queue_search_value(q, value);
-
-		if (position != -1)
-			printf("Value is on position %d\n", position);
-		else 
-			puts("value not found.");
-		
-	} else {
-		puts("Type a valid input to search.");
-	}
-}
-
-void help()
-{
-	/* TODO
-	* Print in the screen what is a circular queue
-	* How does it work and the execution time using BigO notation
-	*/
 }

@@ -4,10 +4,11 @@
 #include "circular_queue.h"
 
 struct c_queue {
-    int *itens;
-    int capacity;
-    unsigned int start;
-    unsigned int end;
+	int *itens;
+	int capacity;
+	int size;
+	int start;
+	int end;
 };
 
 Circular_Queue *queue_create(int capacity)
@@ -15,25 +16,26 @@ Circular_Queue *queue_create(int capacity)
 	Circular_Queue *q = malloc(sizeof(Circular_Queue));
 	q->capacity = capacity;
 	q->itens = malloc(capacity * sizeof(int));
-	q->start = 0;
-	q->end = 0;
+	q->size = 0;
+	q->start = -1;
+	q->end = -1;
 
 	return q;
 }
 
 int queue_size(Circular_Queue *q)
 {
-	return q->end >= q->start ? q->end - q->start : q->capacity - q->start + q->end;
+	return q->size;
 }
 
 int is_empty(Circular_Queue *q)
 {
-	return queue_size(q) == 0;
+	return q->start == -1;
 }
 
 int is_full(Circular_Queue *q)
 {
-	return queue_size(q) == q->capacity - 1;
+	return (q->end + 1) % q->capacity == q->start;
 }
 
 void queue_enqueue(Circular_Queue *q, int value)
@@ -43,8 +45,11 @@ void queue_enqueue(Circular_Queue *q, int value)
 		return;
 	}
 
-	q->itens[q->end] = value;
+	if (q->start == -1) q->start = 0;
+
 	q->end = (q->end + 1) % q->capacity;
+	q->itens[q->end] = value;
+	q->size++;
 }
 
 int queue_dequeue(Circular_Queue *q)
@@ -53,26 +58,18 @@ int queue_dequeue(Circular_Queue *q)
 		puts("The queue is empty!");
 		return -1;
 	}
+	int e = q->itens[q->start];
 	
-	int value = q->itens[q->start];
-	q->start = (q->start + 1) % q->capacity;
+	if(q->start == q->end)
+		q->start = q->end = -1;
+	else
+		q->start = (q->start+1) % q->capacity;
+	
+	q->size--;
 
-	return value;
+	return e;
 }
 
-int queue_search_value(Circular_Queue *q, int value)
-{
-	if (is_empty(q)) {
-		printf("Not able to search, Queue is empty.\n");
-		return -1;
-	}
-
-	unsigned int i;
-	for (i = q->start; i != q->end; i = (i + 1) % q->capacity)
-		if (q->itens[i] == value) return i;
-		
-	return -1;
-}
 
 void queue_print(Circular_Queue *q)
 {
@@ -81,9 +78,12 @@ void queue_print(Circular_Queue *q)
 		return;
 	}
 
-	unsigned int i;
-	for (i = q->start; i != q->end; i = (i + 1) % q->capacity)
+	int i;
+	int ind = q->start;
+	for (i = 0; i < q->size; i++){
 		printf("[%d]", q->itens[i]);
+		ind = (ind + 1) % q->capacity;
+	}
 
 	puts("");
 }

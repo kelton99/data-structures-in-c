@@ -64,7 +64,6 @@ void stack_print(Stack *s)
                 puts("The stack is empty!");
                 return;
         }
-
         int i;
         for (i = 0; i <= s->size; i++)
                 printf("[%d]", s->elements[i]);

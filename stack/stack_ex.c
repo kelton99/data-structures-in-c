@@ -13,8 +13,8 @@ int get_menu_input(void);
 void print(Stack *s);
 void push(Stack *s);
 void pop(Stack *s);
-Stack *invert(Stack *s);
-Stack *remove_element(Stack *s);
+void invert(Stack *s);
+void remove_element(Stack *s);
 void load_dataset(Stack *s);
 void help();
 
@@ -41,10 +41,10 @@ int main(void)
     				pop(s);
     				break;
 			case OPT_INVERT:
-    				s = invert(s);
+    				invert(s);
     				break;
 			case OPT_REMOVE:
-    				s = remove_element(s);
+    				remove_element(s);
     				break;
 			case OPT_HELP:
 				help();
@@ -107,43 +107,47 @@ void pop(Stack *s)
 	printf("Value dequeued: %d\n", value);
 }
 
-Stack *invert(Stack *s)
+void invert(Stack *s)
 {
 	if (is_empty(s)){
 		puts("Can't invert a empty stack");
-		return s;
+		return;
 	}
 	
-	Stack *aux = create_stack(10);
+	Stack *aux = create_stack(stack_size(s));
+	Stack *aux2 = create_stack(stack_size(s));
+
 	while(!is_empty(s)){
 		stack_push(aux, stack_pop(s));
 	}
-	return aux;
+	while(!is_empty(aux)){
+		stack_push(aux2, stack_pop(aux));
+	}
+	while(!is_empty(aux2)){
+		stack_push(s, stack_pop(aux2));
+	}
 }
 
-Stack *remove_element(Stack *s)
+void remove_element(Stack *s)
 {
 	if (is_empty(s)){
-		puts("Can't invert a empty stack");
-		return s;
+		puts("Can't remove an element of an empty stack");
+		return;
 	}
 
 	int n;
 	puts("Insert a value to remove: ");
-	if(!get_int_input(&n)) return s;
+	if(!get_int_input(&n)) return;
 
-	Stack *aux = create_stack(10);
+	Stack *aux = create_stack(stack_size(s));
 	while (stack_top(s) != n){
 		stack_push(aux, stack_pop(s));
 	}
+
 	stack_pop(s);
-	while (!is_empty(s)){
-		stack_push(aux, stack_pop(s));
+	while (!is_empty(aux)){
+		stack_push(s, stack_pop(aux));
 	}
-	
-	aux = invert(aux);
-	return aux;
-	
 }
 
 void load_dataset(Stack *s)

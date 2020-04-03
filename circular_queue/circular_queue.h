@@ -15,8 +15,6 @@ void queue_enqueue(Circular_Queue *q, int value);
 
 int queue_dequeue(Circular_Queue *q);
 
-int queue_search_value(Circular_Queue *q, int value);
-
 void queue_print(Circular_Queue *q);
 
 void queue_destroy(Circular_Queue *q);
