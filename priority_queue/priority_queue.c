@@ -14,12 +14,18 @@ Priority_Queue *queue_create(int capacity)
 	Priority_Queue *q = malloc(sizeof(Priority_Queue));
 	q->itens = malloc(capacity * sizeof(int));
 	q->capacity = capacity + 1;
+	q->size = 0;
 	return q;
+}
+
+int queue_capacity(Priority_Queue *q)
+{
+	return q->capacity;
 }
 
 int queue_size(Priority_Queue *q)
 {
-	
+	return q->size;
 }
 
 int is_empty(Priority_Queue *q)
@@ -42,7 +48,7 @@ void swap(Priority_Queue *q, int i, int j)
 void correct_up(Priority_Queue *q)
 {
 	int i = q->size;
-	while (i >= 2 && q->itens[i/2] < q->itens[i]){
+	while (i >= 2 && q->itens[i/2] < q->itens[i]) {
 		swap(q, i/2, i);
 		i /= 2;
 	}
@@ -71,9 +77,11 @@ void queue_enqueue(Priority_Queue *q, int value)
 		printf("Not able to enqueue %d, The queue is full.\n", value);
 		return;
 	}
+
 	q->size++;
 	q->itens[q->size] = value;
-	correct_heap(q);
+	
+	correct_up(q);
 }
 
 int queue_dequeue(Priority_Queue *q)
@@ -89,18 +97,13 @@ int queue_dequeue(Priority_Queue *q)
 	return max;
 }
 
-int queue_capacity(Priority_Queue *q)
-{
-	return q->capacity;
-}
-
 void queue_print(Priority_Queue *q)
 {
 	if (is_empty(q)) {
 		puts("The queue is empty!");
 		return;
 	}
-	for (int i = 0; i < q->size; i++)
+	for (int i = 1; i <= q->size; i++)
 		printf("[%d]", q->itens[i]);
 	
 	puts("");
