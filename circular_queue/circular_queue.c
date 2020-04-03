@@ -60,10 +60,7 @@ int queue_dequeue(Circular_Queue *q)
 	}
 	int e = q->itens[q->start];
 	
-	if(q->start == q->end)
-		q->start = q->end = -1;
-	else
-		q->start = (q->start+1) % q->capacity;
+	q->start = (q->start+1) % q->capacity;
 	
 	q->size--;
 
@@ -81,7 +78,7 @@ void queue_print(Circular_Queue *q)
 	int i;
 	int ind = q->start;
 	for (i = 0; i < q->size; i++){
-		printf("[%d]", q->itens[i]);
+		printf("[%d]", q->itens[ind]);
 		ind = (ind + 1) % q->capacity;
 	}
 
