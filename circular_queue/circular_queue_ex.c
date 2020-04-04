@@ -9,7 +9,7 @@
 	void clear_console() { system("clear"); }
 #endif
 
-enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_REMOVE, OPT_PRINT_E, OPT_PRINT_NE};
+enum options {OPT_EXIT, OPT_ENQUEUE, OPT_DEQUEUE, OPT_REMOVE, OPT_PRINT_E, OPT_PRINT_NE, OPT_INVERT};
 
 int get_int_input(int *value);
 int get_menu_input(void);
@@ -20,6 +20,7 @@ void remove_element(Circular_Queue *q);
 void load_dataset(Circular_Queue *q);
 void print_empty(Circular_Queue * q);
 void print_not_empty(Circular_Queue * q);
+void invert(Circular_Queue *q);
 
 int main(void)
 {
@@ -49,6 +50,9 @@ int main(void)
 			case OPT_PRINT_NE:
     				print_not_empty(q);
     				break;
+			case OPT_INVERT:
+    				invert(q);
+    				break;
 			default:
 				puts("Option not avaliable!");
 				break;
@@ -73,6 +77,7 @@ int get_int_input(int *value)
 int get_menu_input(void)
 {
 	puts("Options Menu:\n[0] exit\n[1] enqueue\n[2] dequeue\n[3] remove\n[4] print empty\n[5] print without empty");
+	puts("[6] invert");
 	puts("Insert an option:");
 	
 	int option;
@@ -144,6 +149,18 @@ void remove_element(Circular_Queue *q)
 
 	for(; i > 0; i--) 
 		queue_enqueue(q, queue_dequeue(q));
+}
+
+void invert(Circular_Queue *q)
+{
+	int size = queue_size(q) - 1;
+	int arr[size];
+	for (int i = 0; !is_empty(q); i++)
+		arr[i] = queue_dequeue(q);
+	
+	for (int i = size; i >= 0; i--)
+		queue_enqueue(q, arr[i]);
+	
 }
 
 void load_dataset(Circular_Queue *q)
