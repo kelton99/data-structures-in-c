@@ -32,6 +32,7 @@ int queue_front_position(Circular_Queue *q)
 {
 	return q->start;
 }
+
 int queue_front(Circular_Queue *q)
 {
 	return q->itens[q->start];

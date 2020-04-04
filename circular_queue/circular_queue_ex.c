@@ -134,13 +134,12 @@ void remove_element(Circular_Queue *q)
 	if(!get_int_input(&n)) return;
 
 	int i = queue_size(q) - 1;
-	int j = 0;
-	while(queue_front(q) != n){
+	int j;
+	for(j = 0; queue_front(q) != n; i--, j++){
 		queue_enqueue(q, queue_dequeue(q));
-		i--;j++;
-		if(j == queue_size(q)) return;
-
+		if(j == queue_size(q) - 1) return;
 	}
+	
 	queue_dequeue(q);
 
 	for(; i > 0; i--) 
