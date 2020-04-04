@@ -69,7 +69,10 @@ int queue_dequeue(Circular_Queue *q)
 	}
 	int e = q->itens[q->start];
 	
-	q->start = (q->start+1) % q->capacity;
+	if(q->start == q->end)
+		q->start = q->end = -1;
+	else
+		q->start = (q->start+1) % q->capacity;
 	
 	q->size--;
 
