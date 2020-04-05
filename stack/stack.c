@@ -55,7 +55,7 @@ int stack_top(Stack *s)
 
 int stack_size(Stack *s)
 {
-        return s->size;
+        return s->size + 1;
 }
 
 void stack_print(Stack *s)

@@ -16,9 +16,8 @@ void pop(Stack *s);
 void invert(Stack *s);
 void remove_element(Stack *s);
 void load_dataset(Stack *s);
-void help();
 
-enum options {OPT_EXIT, OPT_PUSH, OPT_POP, OPT_INVERT, OPT_REMOVE, OPT_HELP};
+enum options {OPT_EXIT, OPT_PUSH, OPT_POP, OPT_INVERT, OPT_REMOVE};
 
 int main(void)
 {
@@ -46,9 +45,6 @@ int main(void)
 			case OPT_REMOVE:
     				remove_element(s);
     				break;
-			case OPT_HELP:
-				help();
-				break;
 			default:
 				puts("Option not avaliable!");
 				break;
@@ -75,7 +71,7 @@ int get_menu_input(void)
 	puts("Options Menu:");
 	puts("[0] exit   [1]push");
 	puts("[2] pop    [3]invert");
-	puts("[4] remove [5]help");
+	puts("[4] remove");
 	puts("Insert an option:");
 	
 	int option;
@@ -140,11 +136,14 @@ void remove_element(Stack *s)
 	if(!get_int_input(&n)) return;
 
 	Stack *aux = create_stack(stack_size(s));
-	while (stack_top(s) != n){
+	while (!is_empty(s)){
 		stack_push(aux, stack_pop(s));
+		if(stack_top(s) == n){
+			stack_pop(s);
+			break;
+		}
 	}
 
-	stack_pop(s);
 	while (!is_empty(aux)){
 		stack_push(s, stack_pop(aux));
 	}
