@@ -117,15 +117,15 @@ void invert(Stack *s)
 	Stack *aux = create_stack(stack_size(s));
 	Stack *aux2 = create_stack(stack_size(s));
 
-	while(!is_empty(s)){
+	while(!is_empty(s))
 		stack_push(aux, stack_pop(s));
-	}
-	while(!is_empty(aux)){
+
+	while(!is_empty(aux))
 		stack_push(aux2, stack_pop(aux));
-	}
-	while(!is_empty(aux2)){
+	
+	while(!is_empty(aux2))
 		stack_push(s, stack_pop(aux2));
-	}
+	
 }
 
 void remove_element(Stack *s)
