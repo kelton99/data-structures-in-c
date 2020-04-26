@@ -118,11 +118,11 @@ void print_empty(Circular_Queue *q)
 }
 
 void print_not_empty(Circular_Queue *q)
-{
+{	
 	for(int i = 0; i < queue_size(q); i++){
-		int temp = queue_dequeue(q);
+		int temp = queue_dequeue(q); // tamanho - 1
 		printf("[%d]", temp);
-		queue_enqueue(q, temp);
+		queue_enqueue(q, temp); // tamanho original
 	}
 	puts("");
 }
