@@ -32,24 +32,28 @@ int is_empty(Array_List *list)
         return list->size == 0;
 }
 
-int list_push_back(Array_List *list, int value)
-{
-        if(is_full(list)){
-                puts("The list is full!");
-                return 0;
-        }
-        list->itens[list->size] = value;
-        list->size++;
-        return 1;
-}
-
-void list_push_pos(Array_List *list, int value, int index)
+void list_push_back(Array_List *list, int value)
 {
         if(is_full(list)){
                 puts("The list is full!");
                 return;
         }
-        for(int i = list->size; i > index + 1; i--)
+        list->itens[list->size] = value;
+        list->size++;
+}
+
+void list_insert(Array_List *list, int value, int index)
+{
+        if(is_full(list)){
+                puts("The list is full!");
+                return;
+        }
+        if(index >= list->capacity){
+                puts("Invalid index");
+                return;
+        }
+
+        for(int i = list->size - 1; i >= index; i--)
                 list->itens[i + 1] = list->itens[i];
         
         list->itens[index] = value;
@@ -75,9 +79,9 @@ int list_remove(Array_List *list, int value)
         }
         for(int i = index + 1; i < list->size; i++)
                 list->itens[i - 1] = list->itens[i];
+        
         list->size--;
-        return 1;
-
+        return index;
 }
 int list_remove_from(Array_List *list, int index)
 {
@@ -89,17 +93,19 @@ int list_remove_from(Array_List *list, int index)
 
         for(int i = index + 1; i < list->size; i++)
                 list->itens[i - 1] = list->itens[i];
+
         list->size--;
 
         return element;
 
 }
 
-
 void list_print(Array_List *list)
 {
         if(is_empty(list)) puts("The list is empty!");
         
         for (int i = 0; i < list->size; i++)
-                printf("[%d]", list->itens[i]);        
+                printf("[%d]", list->itens[i]);
+
+        puts("");        
 }
