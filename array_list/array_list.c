@@ -62,11 +62,10 @@ void list_insert(Array_List *list, int value, int index)
 
 int list_search(Array_List *list, int value)
 {
-        for(int i = 0; i < list->size; i++){
-                if(list->itens[i] == value){
+        for(int i = 0; i < list->size; i++)
+                if(list->itens[i] == value)
                         return i;
-                }
-        }
+                
         return -1;
 }
 
