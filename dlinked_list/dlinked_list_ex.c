@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "linked_list.h"
+#include "dlinked_list.h"
 
 // Terrible way to clean the console window, using only for the sake of simplicity
 #ifdef _WIN32
@@ -13,17 +13,17 @@ enum options {OPT_EXIT, OPT_PUSH_BACK, OPT_INSERT, OPT_REMOVE, OPT_REMOVE_POS, O
 
 int get_int_input(int *value);
 int get_menu_input(void);
-void print_list(Linked_List *list);
-void push_back(Linked_List *list);
-void insert(Linked_List *list);
-void remove_element(Linked_List *list);
-void remove_from(Linked_List *list);
-void search(Linked_List *list);
-void load_dataset(Linked_List *list);
+void print_list(DLinked_List *list);
+void push_back(DLinked_List *list);
+void insert(DLinked_List *list);
+void remove_element(DLinked_List *list);
+void remove_from(DLinked_List *list);
+void search(DLinked_List *list);
+void load_dataset(DLinked_List *list);
 
 int main(void)
 {
-	Linked_List *list = create_list();
+	DLinked_List *list = create_list();
 	load_dataset(list);
 	while(1) {
 		clear_console();
@@ -88,7 +88,7 @@ int get_menu_input(void)
 	return 0;
 }
 
-void push_back(Linked_List *list) 
+void push_back(DLinked_List *list) 
 {
 	int value;
 	puts("Insert a value to push back:\n");
@@ -98,7 +98,7 @@ void push_back(Linked_List *list)
 		puts("Not able to push back, invalid input.");
 }
 
-void insert(Linked_List *list) 
+void insert(DLinked_List *list) 
 {
 	int value;
     int index;
@@ -109,7 +109,7 @@ void insert(Linked_List *list)
 		puts("Not able to insert, invalid input.");
 }
 
-void remove_element(Linked_List *list)
+void remove_element(DLinked_List *list)
 {
     if (is_empty(list)){
 		puts("Can't remove an element of an empty list");
@@ -124,7 +124,7 @@ void remove_element(Linked_List *list)
 	
 }
 
-void remove_from(Linked_List *list)
+void remove_from(DLinked_List *list)
 {
     if (is_empty(list)){
 		puts("Can't remove an element of an empty list");
@@ -138,7 +138,7 @@ void remove_from(Linked_List *list)
 	list_remove_from(list, index);
 }
 
-void search(Linked_List *list)
+void search(DLinked_List *list)
 {
 	if (is_empty(list)){
 		puts("Can't search an element of an empty list");
@@ -154,7 +154,7 @@ void search(Linked_List *list)
 	printf("Element found at: %d\n", index);
 }
 
-void load_dataset(Linked_List *list)
+void load_dataset(DLinked_List *list)
 {
 	for(int i = 0; i < 15; i++) list_push_back(list, rand() % 25);
 }
