@@ -9,6 +9,7 @@ DLinked_List *create_list()
         DLinked_List *list = malloc(sizeof(DLinked_List));
         list->size = 0;
         list->head = NULL;
+        list->tail = NULL;
         return list;
 }
 
@@ -24,18 +25,56 @@ int is_empty(DLinked_List *list)
 
 void list_push_back(DLinked_List *list, int value)
 {
+        Node *new_node = create_node(value);
         if(is_empty(list)){
-                list->head = create_node(value);
-        } else {
-                Node *aux_node = list->head;
-                while(aux_node->next != NULL)
-                        aux_node = aux_node->next;
-                
-                Node *new_node = create_node(value);
-                aux_node->next = new_node;
-                new_node->prev = aux_node;
+                list->head = new_node;
+                list->tail = new_node;
+        } else {          
+                list->tail->next = new_node;
+                new_node->prev = list->tail;
+                list->tail = new_node;
         }
         list->size++;
+}
+
+void list_push_front(DLinked_List *list, int value)
+{
+        Node *new_node = create_node(value);
+        if(is_empty(list)){
+                list->head = new_node;
+                list->tail = new_node;
+        } else {          
+                list->head->prev = new_node;
+                new_node->next = list->head;
+                list->head = new_node;
+        }
+        list->size++;
+}
+
+static void sew(Node *node, int value)
+{
+                Node *new_node = create_node(value);
+                new_node->next = node;
+                new_node->prev = node->prev;
+                node->prev->next = new_node;
+                node->prev = new_node;
+
+}
+
+Node *set_pointer(DLinked_List *list, int index)
+{
+        Node *aux_node = NULL;
+
+        if(index < list->size / 2){
+                aux_node = list->head;
+                for(int i = 0; i < index; i++) 
+                        aux_node = aux_node->next;
+        } else {
+                aux_node = list->tail;
+                for(int i = list->size - 1; i > index; i--) 
+                        aux_node = aux_node->prev;
+        }
+        return aux_node;
 }
 
 void list_insert(DLinked_List *list, int value, int index)
@@ -45,31 +84,17 @@ void list_insert(DLinked_List *list, int value, int index)
                 return;
         }
         
-        Node *aux_node = list->head;
+        Node *aux_node = set_pointer(list, index);
         
-        for(int i = 1; i < index; i++) 
-                aux_node = aux_node->next;
-
-        Node *new_node = create_node(value);
-
-        if(aux_node->prev == NULL){
-                aux_node->prev = new_node;
-                new_node->next = aux_node;
-                list->head = new_node;
-        }
-        if (aux_node->next == NULL){
-                new_node->prev = aux_node->prev;
-                aux_node->prev->next = new_node;
-                aux_node->prev = new_node;
-        }else{
-                new_node->prev = aux_node;
-                new_node->next = aux_node->next;
-                aux_node->next->prev = new_node;
-                aux_node->next = new_node;
+        if(aux_node->prev == NULL) {
+                list_push_front(list, value);
+        } else if (aux_node->next == NULL){
+                list_push_back(list, value);
+        } else {
+                sew(aux_node, value);
+                list->size++;
         }
         
-
-        list->size++;
 }
 
 int list_search(DLinked_List *list, int value)
@@ -90,13 +115,18 @@ void list_remove(DLinked_List *list, int value)
 
         if(list->head->item == value) {
                 list->head = aux_node->next;
-                list->size++;
+                free(aux_node);
+                list->size--;
         }
 
         while(aux_node->next != NULL){
                 if(aux_node->next->item == value){
+                        if(aux_node->next->next != NULL)
+                                aux_node->next->next->prev = aux_node->next->prev;
                         aux_node->next = aux_node->next->next;
+                        free(aux_node);
                         list->size--;
+
                 }else{ 
                         aux_node = aux_node->next;
                 }
@@ -105,20 +135,26 @@ void list_remove(DLinked_List *list, int value)
 
 void list_remove_from(DLinked_List *list, int index)
 {
-        if(list->size <= index){
+        if(list->size <= index || index < 0){
                 puts("Invalid index");
                 return;
         }
 
-        Node * aux_node = list->head;
-        for(int i = 1; i < index; i++) 
-                aux_node = aux_node->next;
+        Node *aux_node = set_pointer(list, index);
 
-        if(index == 0)
+        if(aux_node->prev == NULL) {
+                aux_node->next->prev = aux_node->prev;
                 list->head = aux_node->next;
-        else
-                aux_node->next = aux_node->next->next;
-                
+
+        } else if (aux_node->next == NULL){
+                aux_node->prev->next = aux_node->next;
+                list->tail = aux_node->prev;
+
+        } else {
+                aux_node->next->prev = aux_node->prev;
+                aux_node->prev->next = aux_node->next;
+        }
+        free(aux_node);                
         list->size--;
 }
 

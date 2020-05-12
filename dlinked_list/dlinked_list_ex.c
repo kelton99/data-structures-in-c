@@ -156,5 +156,5 @@ void search(DLinked_List *list)
 
 void load_dataset(DLinked_List *list)
 {
-	for(int i = 0; i < 15; i++) list_push_back(list, rand() % 25);
+	for(int i = 0; i < 15; i++) list_push_back(list, i);
 }
