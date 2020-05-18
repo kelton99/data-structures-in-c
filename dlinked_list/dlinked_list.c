@@ -8,8 +8,8 @@ DLinked_List *create_list()
 {
         DLinked_List *list = malloc(sizeof(DLinked_List));
         list->size = 0;
-        list->head = NULL;
-        list->tail = NULL;
+        list->head = create_node(-1);
+        list->tail = create_node(-1);
         return list;
 }
 
