@@ -107,9 +107,7 @@ void list_print(Linked_List *list)
                 return;
         }
         Node *aux_node = list->head;
-        while(aux_node->next != NULL){
+        for(; aux_node->next != NULL; aux_node = aux_node->next)
                 printf("[%d]", aux_node->next->item);
-                aux_node = aux_node->next;
-        }
         printf("\nSize: %d\n", list->size);
 }
